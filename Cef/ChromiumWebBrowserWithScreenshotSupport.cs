@@ -158,7 +158,7 @@ namespace Cef
 
             cancellationTokenSource = new CancellationTokenSource();
 
-            var uiThreadTaskScheduler = Dispatcher.ToTaskSchedulerAsync();
+            var uiThreadTaskScheduler = Dispatcher.ToTaskScheduler();
             
             this.EvaluateScriptAsync(JavascriptQueries.RequestForMaxSize).ContinueWith((scriptTask) =>
             {

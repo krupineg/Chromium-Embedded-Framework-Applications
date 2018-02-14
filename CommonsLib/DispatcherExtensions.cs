@@ -6,7 +6,7 @@ namespace CommonsLib
 {
     public static class DispatcherExtensions
     {
-        public static TaskScheduler ToTaskSchedulerAsync(this Dispatcher dispatcher)
+        public static TaskScheduler ToTaskScheduler(this Dispatcher dispatcher)
         {
             var result = TaskScheduler.Current;
             dispatcher.Invoke(
