@@ -5,9 +5,8 @@ namespace CommonsLib
 {
     public class ObserverAttachingBootstrapper
     {
-        public void Do(Action<string> runScript, Action<string> takeScreenshot, Action<string> printToPdf)
+        public void Do(Action<string> runScript)
         {
-            takeScreenshot("c:\\temp\\some_screenshot.png");
             string script = string.Format(
                 "function detectFocus() {{ {0}.elementFocusChanged(); }}; window.addEventListener('focus', detectFocus, true)",
                 JavascriptNames.___Web_Observer);
@@ -23,17 +22,6 @@ namespace CommonsLib
                 JavascriptNames.___Web_Observer);
 
             runScript(script);
-
-            if (takeScreenshot != null)
-            {
-                takeScreenshot("c:\\temp\\screenshot.png");
-            }
-
-            if (printToPdf != null)
-            {
-                printToPdf("c:\\temp\\pdfversion.pdf");
-            }
         }
-
     }
 }

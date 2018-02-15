@@ -62,9 +62,9 @@ namespace WpfDotNetBrowserApp
                         Result = val.ToString(),
                         Message = val.ToString()
                     };
-                }), TakeScreenshot));
+                })));
 
-                new ObserverAttachingBootstrapper().Do(s => _browser.Browser.ExecuteJavaScript(s), TakeScreenshot, null);
+                new ObserverAttachingBootstrapper().Do(s => _browser.Browser.ExecuteJavaScript(s));
             }
         }
 

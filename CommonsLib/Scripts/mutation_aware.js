@@ -13,11 +13,11 @@ function debounce(func, wait, immediate) {
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
     };
-};
+}
 
 function detectMutation() {
      //{ SOME USEFUL ACTION HERE } 
-};
+}
 
 var observer = new MutationObserver(debounce(
     function(mutations) {

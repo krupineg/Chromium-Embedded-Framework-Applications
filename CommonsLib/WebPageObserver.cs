@@ -11,14 +11,12 @@ namespace CommonsLib
         private readonly Dispatcher _dispatcher;
         private readonly Func<bool> _isLoading;
         private readonly Func<string, Task<ScriptRunResult>> _runJs;
-        private readonly Action<string> _takeScreenshot;
 
-        public WebPageObserver(Dispatcher dispatcher, Func<bool> isLoading, Func<string, Task<ScriptRunResult>> runJs, Action<string> takeScreenshot)
+        public WebPageObserver(Dispatcher dispatcher, Func<bool> isLoading, Func<string, Task<ScriptRunResult>> runJs)
         {
             _dispatcher = dispatcher;
             _isLoading = isLoading;
             _runJs = runJs;
-            _takeScreenshot = takeScreenshot;
         }
 
         private string[] queriesList = new[]
@@ -83,7 +81,6 @@ namespace CommonsLib
                 Console.WriteLine("loading: " + loading);
                 Thread.Sleep(50);
             }
-            _takeScreenshot("c:\\temp\\muta_screenshot.png");
         }
     }
 }

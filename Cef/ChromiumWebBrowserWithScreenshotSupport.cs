@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,7 +26,39 @@ namespace Cef
         private TaskCompletionSource<InteropBitmap> screenshotTaskCompletionSource;
         private object screenshotLock = new object();
 
-        public Task<InteropBitmap> TakeScreenshot(Size screenshotSize, CancellationToken token, int? frameRate = 1, int? ignoreFrames = 0, TimeSpan? timeout = null)
+        public ICommand TakeScreenshotCommand
+        {
+            get
+            {
+                return new DelegateCommand(() => TakeScreenshot("c:\\temp\\scrntsht.png"));
+            } 
+        }
+
+        public event EventHandler<string> AddressChanged;
+
+        private class DelegateCommand : ICommand
+        {
+            private readonly Action _command;
+
+            public DelegateCommand(Action command)
+            {
+                _command = command;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object parameter)
+            {
+                _command.Invoke();
+            }
+
+            public event EventHandler CanExecuteChanged;
+        }
+
+        private Task<InteropBitmap> TakeScreenshot(Size screenshotSize, CancellationToken token, int? frameRate = 1, int? ignoreFrames = 0, TimeSpan? timeout = null)
         {
             lock (screenshotLock)
             {
@@ -93,6 +127,15 @@ namespace Cef
             
         }
 
+        protected override void OnAddressChanged(string oldValue, string newValue)
+        {
+            base.OnAddressChanged(oldValue, newValue);
+            if (AddressChanged != null)
+            {
+                AddressChanged(this, newValue);
+            }
+        }
+
         protected override void OnPaint(BitmapInfo bitmapInfo)
         {
             lock (screenshotLock)
@@ -141,7 +184,7 @@ namespace Cef
             }
         }
 
-        public void TakeScreenshot(string filename)
+        private void TakeScreenshot(string filename)
         {
             if (cancellationTokenSource != null)
             {
