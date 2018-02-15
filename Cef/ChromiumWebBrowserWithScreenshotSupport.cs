@@ -36,28 +36,6 @@ namespace Cef
 
         public event EventHandler<string> AddressChanged;
 
-        private class DelegateCommand : ICommand
-        {
-            private readonly Action _command;
-
-            public DelegateCommand(Action command)
-            {
-                _command = command;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public void Execute(object parameter)
-            {
-                _command.Invoke();
-            }
-
-            public event EventHandler CanExecuteChanged;
-        }
-
         private Task<InteropBitmap> TakeScreenshot(Size screenshotSize, CancellationToken token, int? frameRate = 1, int? ignoreFrames = 0, TimeSpan? timeout = null)
         {
             lock (screenshotLock)
