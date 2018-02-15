@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Cef
+namespace CommonsLib
 {
     public class ViewModel : INotifyPropertyChanged
     {

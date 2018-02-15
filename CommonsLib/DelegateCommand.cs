@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Cef
+namespace CommonsLib
 {
     public class DelegateCommand : ICommand
     {
