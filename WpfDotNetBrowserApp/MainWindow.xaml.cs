@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,8 @@ namespace WpfDotNetBrowserApp
             InitializeComponent();
             var browser = BrowserFactory.Create(BrowserType.LIGHTWEIGHT);
             _browser = new WPFBrowserView(browser);
-            Content = _browser;
+            _grid.Children.Add(_browser);
+            Grid.SetRow(_browser, 1);
             _browser.URL = "github.com";
             _browser.FinishLoadingFrameEvent += BrowserOnFinishLoadingFrameEvent;
             _browser.ConsoleMessageEvent += BrowserOnConsoleMessageEvent;
@@ -47,11 +49,15 @@ namespace WpfDotNetBrowserApp
             _browser.Dispose();
         }
 
+        public ICommand TakeScreenshotCommand
+        {
+            get { return new DelegateCommand(() => TakeScreenshot("c:\\temp\\amazing_screenshot.png")); }
+        }
+
         private void BrowserOnFinishLoadingFrameEvent(object sender, FinishLoadingEventArgs finishLoadingEventArgs)
         {
             if (finishLoadingEventArgs.IsMainFrame)
             {
-                TakeScreenshot("c:\\temp\\amazing_screenshot.png");
                 JSValue value = _browser.Browser.ExecuteJavaScriptAndReturnValue("window");
                 value.AsObject().SetProperty(JavascriptNames.___Web_Observer, new WebPageObserver(Dispatcher, () => !_browser.IsLoaded, s => Task.Run(() =>
                 {
@@ -76,6 +82,11 @@ namespace WpfDotNetBrowserApp
 
             var screenshot = _browser.Browser.ImageProvider.GetImage(width, height);
             screenshot.Save(s, ImageFormat.Png);
+            Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = s
+            });
         }
 
         private void BrowserOnConsoleMessageEvent(object sender, ConsoleEventArgs consoleEventArgs)

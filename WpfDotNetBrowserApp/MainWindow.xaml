@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDotNetBrowserApp"
         mc:Ignorable="d"
+        Name="_window"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
+    <Grid x:Name="_grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Width="100" HorizontalAlignment="Left" Command="{Binding ElementName=_window, Path=TakeScreenshotCommand}">Take screenshot</Button>
         
     </Grid>
 </Window>
