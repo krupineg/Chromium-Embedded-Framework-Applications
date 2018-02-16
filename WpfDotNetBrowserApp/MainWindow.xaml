@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Width="100" HorizontalAlignment="Left" Command="{Binding ElementName=_window, Path=TakeScreenshotCommand}">Take screenshot</Button>
-        
+        <Button Width="100" HorizontalAlignment="Left" Command="{Binding TakeScreenshotCommand}">Take screenshot</Button>
+        <local:LazyBrowser Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Browser="{Binding Browser}"/>
     </Grid>
 </Window>
