@@ -82,7 +82,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChromiumWebBrowserWithScreenshotSupport.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="RenderProcessMessageHandler.cs" />
     <Page Include="MainWindow.xaml">
