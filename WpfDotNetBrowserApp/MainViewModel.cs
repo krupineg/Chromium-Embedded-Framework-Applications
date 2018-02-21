@@ -108,21 +108,35 @@ namespace WpfDotNetBrowserApp
             if (finishLoadingEventArgs.IsMainFrame)
             {
                 JSValue value = Browser.ExecuteJavaScriptAndReturnValue("window");
-                value.AsObject().SetProperty(JavascriptNames.___Web_Observer, new WebPageObserver(s => Task.Run(() =>
+                value.AsObject().SetProperty(JavascriptNames.___Web_Observer,
+                    new WebPageObserver(new ScriptRunner(Browser), Guid.NewGuid()));
+
+                new ObserverAttachingBootstrapper().Do(s => Browser.ExecuteJavaScript(s));
+            }
+        }
+
+        internal class ScriptRunner : IScriptRunner
+        {
+            private readonly Browser _browser;
+
+            public ScriptRunner(Browser browser)
+            {
+                _browser = browser;
+            }
+            public Task<ScriptRunResult> RunWithResult(string script)
+            {
+                return Task.Run(() =>
                 {
-                    var val = Browser.ExecuteJavaScriptAndReturnValue(s);
+                    var val = _browser.ExecuteJavaScriptAndReturnValue(script);
                     return new ScriptRunResult()
                     {
                         Success = val != null,
                         Result = val.ToString(),
                         Message = val.ToString()
                     };
-                })));
-
-                new ObserverAttachingBootstrapper().Do(s => Browser.ExecuteJavaScript(s));
+                });
             }
         }
-
         private void BrowserOnConsoleMessageEvent(object sender, ConsoleEventArgs consoleEventArgs)
         {
             Console.WriteLine(consoleEventArgs.Message);

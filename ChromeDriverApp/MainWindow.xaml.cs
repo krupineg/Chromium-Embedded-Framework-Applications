@@ -61,7 +61,6 @@ namespace ChromeDriverApp
 
         private void WaitPage(ChromeDriver driver)
         {
-            bool ready = false;
             while (IsLoading(driver))
             {
             }

@@ -3,45 +3,35 @@ using System.Windows.Input;
 
 namespace CommonsLib
 {
-
-    public class DelegateCommand<T> : ICommand
-    {
-        private readonly Action<object> _action;
-
-        public DelegateCommand(Action<object> action)
-        {
-            _action = action;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            _action(parameter);
-        }
-
-        public event EventHandler CanExecuteChanged;
-    }
-
     public class DelegateCommand : ICommand
     {
-        private readonly Action _command;
+        private readonly Action _actionWithoutParameter;
+        private readonly Action<object> _actionWithParameter;
         private readonly Func<bool> _canExecute;
 
         public event EventHandler CanExecuteChanged;
+        
+        public DelegateCommand(Action<object> command)
+        {
+            _actionWithParameter = command;
+            _canExecute = () => true;
+        }
 
         public DelegateCommand(Action command)
         {
-            _command = command;
+            _actionWithoutParameter = command;
             _canExecute = () => true;
+        }
+
+        public DelegateCommand(Action<object> command, Func<bool> canExecute)
+        {
+            _actionWithParameter = command;
+            _canExecute = canExecute;
         }
 
         public DelegateCommand(Action command, Func<bool> canExecute)
         {
-            _command = command;
+            _actionWithoutParameter = command;
             _canExecute = canExecute;
         }
 
@@ -52,7 +42,14 @@ namespace CommonsLib
 
         public virtual void Execute(object parameter)
         {
-            _command.Invoke();
+            if (_actionWithoutParameter != null)
+            {
+                _actionWithoutParameter.Invoke();
+            }
+            else
+            {
+                _actionWithParameter.Invoke(parameter);
+            }
         }
 
         public void RaiseCanExecuteChanged()

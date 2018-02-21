@@ -33,7 +33,7 @@ namespace Cef
                 {
                     LogEventTypes.Focus, LogEventTypes.MouseOver, LogEventTypes.Mutation
                 });
-            ToggleTypeCommand = new DelegateCommand<object>((o) => Logger.ToggleType(o.ToString()));
+            ToggleTypeCommand = new DelegateCommand((o) => Logger.ToggleType(o.ToString()));
             ShowDevToolsCommand = new DelegateCommand(() => tabSelectorViewModel.SelectedTab.Browser.ShowDevTools());
         }
 
