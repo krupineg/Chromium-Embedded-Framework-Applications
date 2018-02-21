@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Cef.BrowserTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cef"
+             xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:views="clr-namespace:Cef.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             x:Name="_tab"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <views:NavigationItemView DataContext="{Binding NavigationItemViewModel}" />
+            <views:AddressBarView DataContext="{Binding AddressBarViewModel}" HorizontalAlignment="Stretch" Grid.Column="1"/>
+        </Grid>
+        
+        <ProgressBar Grid.Row="1" Foreground="DarkBlue" IsIndeterminate="{Binding NavigationItemViewModel.IsLoading}"/>
+        <wpf:ChromiumWebBrowser  Grid.Row="2" 
+                                 x:Name="_browser"
+                                 WebBrowser="{Binding Browser, Mode=OneWayToSource}"
+                                 Title="{Binding TabHeaderViewModel.Title, Mode=OneWayToSource}"
+                                 Address="{Binding AddressBarViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Stretch">
+            <i:Interaction.Behaviors>
+                <local:BindingBehavior IsLoadingBinder="{Binding ElementName=_browser, Path=IsLoading}" IsLoadingBindable="{Binding NavigationItemViewModel.IsLoading, Mode=OneWayToSource}"/>
+            </i:Interaction.Behaviors>
+        </wpf:ChromiumWebBrowser>
+    </Grid>
+</UserControl>

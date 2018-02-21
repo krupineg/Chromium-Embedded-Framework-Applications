@@ -20,7 +20,7 @@ namespace WpfDotNetBrowserApp
             get { return _address; }
             set
             {
-                SetProperty(value, ref _address);
+                SetProperty(ref _address, value);
                 Browser.LoadURL(value);
             }
         }
@@ -30,7 +30,7 @@ namespace WpfDotNetBrowserApp
             get { return _browser1; }
             set
             {
-                SetProperty(value, ref _browser1);
+                SetProperty(ref _browser1, value);
             }
         }
 
@@ -108,7 +108,7 @@ namespace WpfDotNetBrowserApp
             if (finishLoadingEventArgs.IsMainFrame)
             {
                 JSValue value = Browser.ExecuteJavaScriptAndReturnValue("window");
-                value.AsObject().SetProperty(JavascriptNames.___Web_Observer, new WebPageObserver(Dispatcher.CurrentDispatcher, () => Browser.Loading, s => Task.Run(() =>
+                value.AsObject().SetProperty(JavascriptNames.___Web_Observer, new WebPageObserver(s => Task.Run(() =>
                 {
                     var val = Browser.ExecuteJavaScriptAndReturnValue(s);
                     return new ScriptRunResult()
@@ -128,7 +128,7 @@ namespace WpfDotNetBrowserApp
             Console.WriteLine(consoleEventArgs.Message);
         }
 
-        public void Dispose()
+        protected override void DisposeInternal()
         {
             _browser1.FinishLoadingFrameEvent -= BrowserOnFinishLoadingFrameEvent;
             _browser1.ConsoleMessageEvent -= BrowserOnConsoleMessageEvent;

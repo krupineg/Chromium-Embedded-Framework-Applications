@@ -1,0 +1,47 @@
+﻿<Border x:Class="Cef.Views.NavigationItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cef.Views"
+             xmlns:cef="clr-namespace:Cef"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             Background="Transparent"
+             Margin="2"
+             x:Name="Border"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value=".5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <cef:InvertableBooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Border.Resources>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button BorderThickness="0" BorderBrush="Transparent" Width="18" Height="18" Command="{Binding BackCommand}" DockPanel.Dock="Right" Background="Transparent" Margin="4" ToolTip="Click to go back, hold to see history">
+
+                <Path Stroke="Transparent" Fill="Black" Stretch="Uniform" Data="M40 22h-24.34l11.17-11.17-2.83-2.83-16 16 16 16 2.83-2.83-11.17-11.17h24.34v-4z"/>
+            </Button>
+            <Button BorderThickness="0" BorderBrush="Transparent" Width="18" Height="18" Grid.Column="1" Command="{Binding ForwardCommand}" Background="Transparent" Margin="4" ToolTip="Click to go forward, hold to see history">
+                <Path Stroke="Transparent" Fill="Black" Stretch="Uniform" Data="M24 8l-2.83 2.83 11.17 11.17h-24.34v4h24.34l-11.17 11.17 2.83 2.83 16-16z"/>
+            </Button>
+            <Button BorderThickness="0" BorderBrush="Transparent" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverted}" Width="18" Height="18" Grid.Column="2" Command="{Binding ReloadCommand}" Background="Transparent" Margin="4" ToolTip="Reload this page">
+                <Path Stroke="Transparent" Fill="Black" Stretch="Uniform" Data="M24,13V7.369L21.899,9.47c-1.537-1.54-3.657-2.495-6.005-2.495c-4.694,0-8.5,3.806-8.5,8.5s3.806,8.5,8.5,8.5   c3.159,0,5.91-1.727,7.375-4.286l-1.737-0.993c-1.122,1.955-3.226,3.278-5.638,3.278c-3.584,0-6.5-2.916-6.5-6.5   c0-3.584,2.916-6.5,6.5-6.5c1.792,0,3.414,0.732,4.59,1.91L18.369,13H24z"/>
+            </Button>
+            <Button BorderThickness="0" BorderBrush="Transparent" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Width="18" Height="18" Grid.Column="2" Command="{Binding StopCommand}" Background="Transparent" Margin="4" ToolTip="Stop loading this page">
+                <Path Stroke="Transparent" Fill="Black" Stretch="Uniform" Data="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z"/>
+            </Button>
+        </Grid>
+    </Grid>
+    
+</Border>

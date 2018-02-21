@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace CommonsLib
 {
-    public class WebPageObserver
+    public class WebPageObserver : IWebPageObserver
     {
-        private readonly Dispatcher _dispatcher;
-        private readonly Func<bool> _isLoading;
-        private readonly Func<string, Task<ScriptRunResult>> _runJs;
+        private readonly IScriptRunner _scriptRunner;
+        private readonly Guid _pageId;
+        public event EventHandler<MouseOverChangedEventArgs> MouseOverChanged;
+        public event EventHandler<FocusChangedEventArgs> FocusChanged;
+        public event EventHandler<MutationEventArgs> Mutated;
 
-        public WebPageObserver(Dispatcher dispatcher, Func<bool> isLoading, Func<string, Task<ScriptRunResult>> runJs)
+        public WebPageObserver(IScriptRunner scriptRunner, Guid pageId)
         {
-            _dispatcher = dispatcher;
-            _isLoading = isLoading;
-            _runJs = runJs;
+            _scriptRunner = scriptRunner;
+            _pageId = pageId;
         }
 
         private string[] queriesList = new[]
         {
             "document.activeElement.id",
+            "document.activeElement.name",
             "document.activeElement.className",
             "document.activeElement.getBoundingClientRect().x",
             "document.activeElement.getBoundingClientRect().y",
@@ -36,50 +39,57 @@ namespace CommonsLib
             "document.activeElement.getBoundingClientRect().innerHtml",
         };
 
-        public void mouseOverChanged(object className, object id, object x, object y)
+        public void mouseOverChanged(object className, object id, string name, object x, object y)
         {
-            Console.WriteLine("===============");
-            Console.WriteLine("mouse over changed");
+            //Debug.WriteLine("===============");
+            //Debug.WriteLine("mouse over changed");
 
-            Console.WriteLine("className : " + className);
-            Console.WriteLine("id : " + id);
-            Console.WriteLine("element x : " + x);
-            Console.WriteLine("element y : " + y);
-            Console.WriteLine("===============");
+            //Debug.WriteLine("className : " + className);
+            //Debug.WriteLine("id : " + id);
+            //Debug.WriteLine("name : " + name);
+            //Debug.WriteLine("element x : " + x);
+            //Debug.WriteLine("element y : " + y);
+            //Debug.WriteLine("===============");
+            if (MouseOverChanged != null)
+            {
+                var dictionary = new Dictionary<string, object>()
+                {
+                    {"className", className},
+                    {"id", id},
+                    {"name", name},
+                    {"element x", x},
+                    {"element y", y},
+                };
+                MouseOverChanged(this, new MouseOverChangedEventArgs(_pageId, dictionary));
+            }
         }
 
-        public void elementFocusChanged()
+        public async void elementFocusChanged()
         {
             var result = new Dictionary<string, object>();
-            Console.WriteLine("===============");
-            Console.WriteLine("focus changed");
+            //Debug.WriteLine("===============");
+            //Debug.WriteLine("focus changed");
             foreach (var query in queriesList)
             {
-                _dispatcher.Invoke(async () =>
+                await _scriptRunner.RunWithResult(query).ContinueWith(task =>
                 {
-                    await _runJs(query).ContinueWith(task =>
-                    {
-                        object evaluateJavaScriptResult =
-                            task.Result.Success ? (task.Result.Result ?? "null") : task.Result.Message;
+                    var evaluateJavaScriptResult =
+                        task.Result.Success ? (task.Result.Result ?? "null") : task.Result.Message;
 
-                        result.Add(query, evaluateJavaScriptResult);
-                        Console.WriteLine(query + " : " + evaluateJavaScriptResult);
-                    });
+                    result.Add(query, evaluateJavaScriptResult);
                 });
             }
-            Console.WriteLine("===============");
-
+            if (FocusChanged != null)
+            {
+                FocusChanged(this, new FocusChangedEventArgs(_pageId, result));
+            }
         }
 
         public void mutationOccured()
         {
-            var loading = true;
-
-            while (loading)
+            if (Mutated != null)
             {
-                _dispatcher.Invoke(() => loading = _isLoading());
-                Console.WriteLine("loading: " + loading);
-                Thread.Sleep(50);
+                Mutated(this, new MutationEventArgs(_pageId));
             }
         }
     }

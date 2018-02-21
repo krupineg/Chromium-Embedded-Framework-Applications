@@ -43,7 +43,14 @@
   <ItemGroup>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DispatcherExtensions.cs" />
+    <Compile Include="FocusChangedEventArgs.cs" />
+    <Compile Include="IScriptRunner.cs" />
+    <Compile Include="IWebPageObserver.cs" />
     <Compile Include="JavascriptNames.cs" />
+    <Compile Include="JavascriptQueries.cs" />
+    <Compile Include="LogEventTypes.cs" />
+    <Compile Include="MouseOverChangedEventArgs.cs" />
+    <Compile Include="MutationEventArgs.cs" />
     <Compile Include="ObserverAttachingBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptRunResult.cs" />

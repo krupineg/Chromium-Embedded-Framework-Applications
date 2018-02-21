@@ -5,14 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cef"
         xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:views="clr-namespace:Cef.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Chromium Embedded Framework Another Demo" Height="350" Width="525">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:EventTrigger.Actions>
+                <i:InvokeCommandAction Command="{Binding OpenToolsCommand}"/>
+            </i:EventTrigger.Actions>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Width="100" HorizontalAlignment="Left" Command="{Binding TakeScreenshotCommand}">Take screenshot</Button>
-        <wpf:ChromiumWebBrowser Grid.Row="1" x:Name="Browser" Address="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+       
+        <views:BrowserTabSelectorView  Grid.Row="1"  DataContext="{Binding BrowserTabSelectorViewModel}"/>
     </Grid>
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Tools" Command="{Binding OpenToolsCommand}"/>
+        </ContextMenu>
+    </Window.ContextMenu>
 </Window>
