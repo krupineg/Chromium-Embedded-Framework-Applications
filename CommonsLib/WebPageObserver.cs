@@ -26,6 +26,13 @@ namespace CommonsLib
             "document.activeElement.id",
             "document.activeElement.name",
             "document.activeElement.className",
+            "document.activeElement.tagName",
+            "document.activeElement.type",
+            "document.activeElement.jsaction",
+            "document.activeElement.href",
+            "document.activeElement.title",
+            "document.activeElement.value",
+            "document.activeElement.role",
             "document.activeElement.getBoundingClientRect().x",
             "document.activeElement.getBoundingClientRect().y",
             "document.activeElement.getBoundingClientRect().height",
@@ -37,6 +44,12 @@ namespace CommonsLib
             "document.activeElement.getBoundingClientRect().innerText",
             "document.activeElement.getBoundingClientRect().value",
             "document.activeElement.getBoundingClientRect().innerHtml",
+            "document.activeElement.parentElement.tagName",
+            "document.activeElement.parentElement.id",
+            "document.activeElement.parentElement.name",
+            "document.activeElement.parentElement.className",
+            "document.activeElement.parentElement.href",
+            "document.activeElement.parentElement.value",
         };
 
         public void mouseOverChanged(object className, object id, string name, object x, object y)
