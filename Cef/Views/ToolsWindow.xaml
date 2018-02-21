@@ -17,6 +17,7 @@
         <Menu>
             <MenuItem Header="Menu">
                 <MenuItem Header="Screenshot" Command="{Binding TakeScreenshotCommand}"></MenuItem>
+                <MenuItem Header="Chrome Dev Tools" Command="{Binding ShowDevToolsCommand}"></MenuItem>
             </MenuItem>
         </Menu>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding LogTypes}">

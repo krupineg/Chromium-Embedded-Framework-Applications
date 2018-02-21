@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
+using CefSharp;
 
 namespace Cef
 {
@@ -39,6 +40,8 @@ namespace Cef
                     _tabSelector.SelectedTab = _tabSelector.Tabs[index - 1];
                 }
             }
+            currentTab.Browser.CloseDevTools();
+            currentTab.Dispose();
             _tabSelector.Tabs.Remove(currentTab);
         }
         

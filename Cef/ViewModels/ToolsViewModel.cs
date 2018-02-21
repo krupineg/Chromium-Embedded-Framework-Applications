@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
+using CefSharp;
 using CommonsLib;
 
 namespace Cef
@@ -18,6 +19,8 @@ namespace Cef
         
         public ICommand ToggleTypeCommand { get; private set; }
 
+        public ICommand ShowDevToolsCommand { get; private set; }
+
         public ReadOnlyCollection<string> LogTypes { get; private set; }
 
         public ToolsViewModel(ILogger logger, BrowserTabSelectorViewModel tabSelectorViewModel)
@@ -31,6 +34,7 @@ namespace Cef
                     LogEventTypes.Focus, LogEventTypes.MouseOver, LogEventTypes.Mutation
                 });
             ToggleTypeCommand = new DelegateCommand<object>((o) => Logger.ToggleType(o.ToString()));
+            ShowDevToolsCommand = new DelegateCommand(() => tabSelectorViewModel.SelectedTab.Browser.ShowDevTools());
         }
 
         private void TakeScreenshotExecute()

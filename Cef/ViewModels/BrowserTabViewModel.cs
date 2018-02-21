@@ -149,15 +149,15 @@ namespace Cef
 
         protected override void DisposeInternal()
         {
+            _logger.Info("disposing page tab " + Id, LogEventTypes.Common);
             if (Browser != null)
             {
                 Browser.FrameLoadEnd -= BrowserOnFrameLoadEnd;
                 Browser.ConsoleMessage -= BrowserOnConsoleMessage;
-                Browser.Dispose();
-                _logger.Info("closing page tab " + Id, LogEventTypes.Common);
                 Browser.JavascriptObjectRepository.ResolveObject -= JavascriptObjectRepositoryOnResolveObject;
+                Browser.Dispose();
             }
-
+            _logger.Info("page tab is disposed " + Id, LogEventTypes.Common);
             WebPageObserver.FocusChanged -= WebPageObserverOnFocusChanged;
             WebPageObserver.MouseOverChanged -= WebPageObserverOnMouseOverChanged;
             WebPageObserver.Mutated -= WebPageObserverOnMutated;
