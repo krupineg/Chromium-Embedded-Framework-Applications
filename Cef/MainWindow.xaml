@@ -15,6 +15,11 @@
                 <i:InvokeCommandAction Command="{Binding OpenToolsCommand}"/>
             </i:EventTrigger.Actions>
         </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:EventTrigger.Actions>
+                <i:InvokeCommandAction Command="{Binding CloseApplicationCommand}"/>
+            </i:EventTrigger.Actions>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
