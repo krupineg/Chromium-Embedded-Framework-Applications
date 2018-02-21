@@ -73,7 +73,6 @@ namespace Cef
         {
             _dispatcher.InvokeAsync(() =>
             {
-                Console.WriteLine("can go back: " + _browser.CanGoBack);
                 BackCommand.RaiseCanExecuteChanged();
                 ForwardCommand.RaiseCanExecuteChanged();
             });

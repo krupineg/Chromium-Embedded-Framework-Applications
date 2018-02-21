@@ -29,6 +29,7 @@ namespace Cef
                         await Task.Delay(500);
                         var bitmap = await offscreenBrowser.ScreenshotAsync(false, PopupBlending.Main);
                         bitmap.Save(filename, ImageFormat.Png);
+                        offscreenBrowser.Dispose();
                         Process.Start(new System.Diagnostics.ProcessStartInfo
                         {
                             UseShellExecute = true,

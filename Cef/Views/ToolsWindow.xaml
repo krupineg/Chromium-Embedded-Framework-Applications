@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cef.Views"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:cef="clr-namespace:Cef"
+        xmlns:cef="clr-namespace:Cef" WindowStyle="ToolWindow" ResizeMode="CanResizeWithGrip"
         mc:Ignorable="d"
         Title="Tools" Height="300" Width="300">
     <Grid>
