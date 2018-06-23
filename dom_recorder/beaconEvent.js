@@ -26,7 +26,6 @@
                 'value': beacon.value,
                 'role': beacon.role,
                 'innerText': beacon.innerText,
-                'text': beacon.text !== undefined ? beacon.text() : '',
                 'className': beacon.className,
                 'jsAction': beacon.jsAction,
                 'scrollTop': beacon.scrollTop,
