@@ -22,7 +22,7 @@ namespace Cef
 
         public bool CanExecute(object parameter)
         {
-            return _tabSelector.Tabs.Count > 2;
+            return _tabSelector.Tabs.Count > 0;
         }
 
         public void Execute(object parameter)

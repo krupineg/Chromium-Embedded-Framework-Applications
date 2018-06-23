@@ -42,11 +42,8 @@
                 <DataTemplate x:Key="ContentTemplate">
                     <cef:BrowserTabView DataContext="{Binding}"/>
                 </DataTemplate>
-                <DataTemplate x:Key="HeaderTemplate">
-                    <local:BrowserTabHeaderView DataContext="{Binding TabHeaderViewModel}"/>
-                </DataTemplate>
                 <Style TargetType="{x:Type TabItem}">
-                    <Setter Property="HeaderTemplate" Value="{StaticResource HeaderTemplate}"></Setter>
+                    <Setter Property="HeaderTemplate" Value="{x:Null}"></Setter>
                     <Setter Property="ContentTemplate" Value="{StaticResource ContentTemplate}"/>
                 </Style>
             </controls:TabControlEx.Resources>

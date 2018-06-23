@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CommonsLib
 {
@@ -14,6 +19,7 @@ namespace CommonsLib
         public event EventHandler<MouseOverChangedEventArgs> MouseOverChanged;
         public event EventHandler<FocusChangedEventArgs> FocusChanged;
         public event EventHandler<MutationEventArgs> Mutated;
+        public event EventHandler<BeaconEventArgs> BeaconEvent;
 
         public WebPageObserver(IScriptRunner scriptRunner, Guid pageId)
         {
@@ -105,5 +111,75 @@ namespace CommonsLib
                 Mutated(this, new MutationEventArgs(_pageId));
             }
         }
+
+        public void mutationCallback(string eventName, string beaconChanged)
+        {
+            if (BeaconEvent != null)
+            {
+                var jsonReader = new JsonTextReader(new StringReader(beaconChanged))
+                {
+                    DateParseHandling = DateParseHandling.DateTimeOffset
+                };
+
+                var entity = JObject.Load(jsonReader).ToObject<BeaconChangedEvent>();
+                //var  entity = Parsers[eventName](beaconChanged);
+                BeaconEvent(this, new BeaconEventArgs(_pageId, entity));
+            }
+        }
+
+        private Dictionary<string, Func<string, BeaconChangedEvent>> Parsers =
+            new Dictionary<string, Func<string, BeaconChangedEvent>>()
+            {
+                {"beacon-changed", JsonConvert.DeserializeObject<BeaconChangedEvent>},
+                {"beacon-detected", JsonConvert.DeserializeObject<BeaconChangedEvent>},
+                {"beacon-removed", JsonConvert.DeserializeObject<BeaconChangedEvent>}
+            };
+
+        public class BeaconEventArgs : EventArgs
+        {
+            public BeaconEventArgs(Guid pageId, BeaconChangedEvent beaconEvent)
+            {
+                PageId = pageId;
+                Event = beaconEvent.type;
+                Timestamp = beaconEvent.time;
+                Beacon = beaconEvent.beacon;
+                Tag = beaconEvent.beacon.tag;
+            }
+
+            public Guid PageId { get; }
+            public string Event { get; }
+            public long Timestamp { get; }
+            public string Tag { get; }
+            public Beacon Beacon { get; set; }
+        }
+    }
+
+    public class BeaconChangedEvent
+    {
+        public string type { get; set; }
+        public long time { get; set; }
+        public Beacon beacon { get; set; }
+        public string url { get; set; }
+    }
+
+    public class BeaconAppearedEvent : BeaconChangedEvent
+    {
+    }
+
+    public class BeaconDisappearedEvent : BeaconChangedEvent
+    {
+    }
+
+    public class Beacon
+    {
+        public string id { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
+        public double width { get; set; }
+        public double height { get; set; }
+        public string tag { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public Dictionary<string, string> tags { get; set; }
     }
 }

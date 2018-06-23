@@ -7,5 +7,6 @@ namespace CommonsLib
         event EventHandler<MouseOverChangedEventArgs> MouseOverChanged;
         event EventHandler<FocusChangedEventArgs> FocusChanged;
         event EventHandler<MutationEventArgs> Mutated;
+        event EventHandler<WebPageObserver.BeaconEventArgs> BeaconEvent;
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +13,8 @@ using CefSharp;
 using CefSharp.Event;
 using CefSharp.Internals;
 using CommonsLib;
+using Raven.Client;
+using Raven.Client.Embedded;
 
 namespace Cef
 {
@@ -20,7 +23,8 @@ namespace Cef
         private readonly ILogger _logger;
         private readonly Dispatcher _dispatcher;
         private IWebBrowser _browser;
-        
+        private IDocumentStore _embeddedDb;
+
         public IWebBrowser Browser
         {
             get { return _browser; }
@@ -51,6 +55,10 @@ namespace Cef
             Id = Guid.NewGuid();
             _logger = logger;
             _dispatcher = dispatcher;
+            _embeddedDb = new EmbeddableDocumentStore()
+            {
+                DataDirectory = "data" + Id
+            }.Initialize();
             TabHeaderViewModel = new TabHeaderViewModel(closeTabCommandFactory.Create(this), Id);
             NavigationItemViewModel = new NavigationElementViewModel(dispatcher);
             AddressBarViewModel = new AddressBarViewModel(startingAddress, _logger);
@@ -59,8 +67,8 @@ namespace Cef
 
         private void BrowserIsAttached(IWebBrowser browser)
         {
-            NavigationItemViewModel.SetBrowser(Browser);
-            TabHeaderViewModel.SetBrowser(Browser);
+            NavigationItemViewModel.SetBrowser(browser);
+            TabHeaderViewModel.SetBrowser(browser);
             ScriptRunner = new CefScriptRunner(browser);
 
             browser.FrameLoadEnd += BrowserOnFrameLoadEnd;
@@ -80,10 +88,21 @@ namespace Cef
             WebPageObserver.FocusChanged += WebPageObserverOnFocusChanged;
             WebPageObserver.Mutated += WebPageObserverOnMutated;
             WebPageObserver.MouseOverChanged += WebPageObserverOnMouseOverChanged;
+            WebPageObserver.BeaconEvent += WebPageObserverOnBeaconEvent;
+        }
+
+        private async void WebPageObserverOnBeaconEvent(object sender, WebPageObserver.BeaconEventArgs beaconEventArgs)
+        {
+            using (var session = _embeddedDb.OpenAsyncSession())
+            {
+                await session.StoreAsync(beaconEventArgs);
+                await session.SaveChangesAsync();
+            }
         }
 
         private void BrowserLoadError(object sender, LoadErrorEventArgs e)
         {
+
             if (e.ErrorCode == CefErrorCode.NameNotResolved)
             {
                 _logger.Info("address unresolved so look for it in google : " + AddressBarViewModel.Address, LogEventTypes.Common);
@@ -103,23 +122,54 @@ namespace Cef
                 _logger.Info(string.Format("frame loaded : {0}", frameLoadEndEventArgs.Frame.Url), LogEventTypes.Common);
                 if (Browser != null)
                 {
-                    new ObserverAttachingBootstrapper().Do(s => Browser.EvaluateScriptAsync(s).ConfigureAwait(false));
+                    new ObserverAttachingBootstrapper().Do(new JsRunner(Browser));
                 }
             }
         }
 
-        private void WebPageObserverOnFocusChanged(object o, FocusChangedEventArgs focusChangedEventArgs)
+        private class JsRunner : IJsRunner
         {
+            private readonly IWebBrowser _browser;
+
+            public JsRunner(IWebBrowser browser)
+            {
+                _browser = browser;
+            }
+            public async Task<dynamic> Evaluate(string s)
+            {
+                var result = await _browser.EvaluateScriptAsync(s).ConfigureAwait(false);
+                return result;
+            }
+        }
+
+
+        private async void WebPageObserverOnFocusChanged(object o, FocusChangedEventArgs focusChangedEventArgs)
+        {
+            using (var session = _embeddedDb.OpenAsyncSession())
+            {
+                await session.StoreAsync(focusChangedEventArgs);
+                await session.SaveChangesAsync();
+            }
             LogDataDictionary(LogEventTypes.Focus, focusChangedEventArgs.FocusedElementData);
         }
 
-        private void WebPageObserverOnMutated(object o, MutationEventArgs mutationEventArgs)
+        private async void WebPageObserverOnMutated(object o, MutationEventArgs mutationEventArgs)
         {
+            using (var session = _embeddedDb.OpenAsyncSession())
+            {
+                await session.StoreAsync(mutationEventArgs);
+                await session.SaveChangesAsync();
+            }
             _logger.Info("page is mutated", LogEventTypes.Mutation);
         }
 
-        private void WebPageObserverOnMouseOverChanged(object o, MouseOverChangedEventArgs mouseOverChangedEventArgs)
+        private async void WebPageObserverOnMouseOverChanged(object o, MouseOverChangedEventArgs mouseOverChangedEventArgs)
         {
+            using (var session = _embeddedDb.OpenAsyncSession())
+            {
+                await session.StoreAsync(mouseOverChangedEventArgs);
+                await session.SaveChangesAsync();
+            }
             LogDataDictionary(LogEventTypes.MouseOver, mouseOverChangedEventArgs.ChangedData);
         }
 
