@@ -31,36 +31,40 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="app.js" />
-    <Compile Include="beaconEvent.js">
+    <Compile Include="src\app.js" />
+    <Compile Include="src\beaconEvent.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="api.js">
+    <Compile Include="src\api.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="callbackObject.js">
+    <Compile Include="src\callbackObject.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="factory.js">
+    <Compile Include="src\factory.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="guid.js">
+    <Compile Include="src\guid.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="observable.js" />
-    <Compile Include="highlight.js">
+    <Compile Include="src\observable.js" />
+    <Compile Include="src\highlight.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="mutation.js" />
-    <Compile Include="walk.js">
+    <Compile Include="src\mutation.js" />
+    <Compile Include="src\walk.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="webpack.config.js">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="entry.config.json" />
+    <Content Include="src\config\entry.config.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\config\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

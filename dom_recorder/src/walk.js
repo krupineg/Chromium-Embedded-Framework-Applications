@@ -1,4 +1,5 @@
-﻿let dom = function (node, func) {
+﻿"use strict";
+function dom(node, func) {
     if (node) {
         func(node);                     //What does this do?
         node = node.firstChild;
@@ -7,6 +8,6 @@
             node = node.nextSibling;
         }
     }
-};
+}
 
 module.exports = { dom };

@@ -26,11 +26,10 @@
     }
   },
   "scripts": {
-    "lint": "jslint dist/dom-recorder.min.js",
-    "hint": "jshint dist/dom-recorder.min.js",
+    "lint": "jslint src/*.js",
+    "hint": "jshint src",
     "min": "node-minify --compressor all --input dist/dom-recorder.js --output dist/dom-recorder.min.js",
     "build": "webpack",
     "watch": "npm-watch"
   }
-
 }

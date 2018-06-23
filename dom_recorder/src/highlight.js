@@ -1,4 +1,5 @@
-﻿const defaultColor = '#f00';
+﻿"use strict";
+const defaultColor = '#f00';
 
 function highlight(beacon, color, thickness) {
     var highlightColor = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test('color') ? color : defaultColor;

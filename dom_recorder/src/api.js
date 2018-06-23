@@ -1,4 +1,5 @@
-﻿var CallbackFunction = {};
+﻿"use strict";
+var CallbackFunction = {};
 var HighlightLibrary = {};
 var IgnoreAttribute = {};
 

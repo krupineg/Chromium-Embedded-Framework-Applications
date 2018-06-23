@@ -1,4 +1,5 @@
-﻿function mutationCallback(name, obj) {
+﻿"use strict";
+function mutationCallback(name, obj) {
     console.log(name);
     console.log(obj);
 }

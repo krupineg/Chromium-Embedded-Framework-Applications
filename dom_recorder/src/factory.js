@@ -1,4 +1,5 @@
-﻿function validateConfig(apiConfig) {
+﻿"use strict";
+function validateConfig(apiConfig) {
     if (!apiConfig.entryPoint) {
         error("entry point config is undefined, please add entryPoint key to dom recorder config json file.");
     }

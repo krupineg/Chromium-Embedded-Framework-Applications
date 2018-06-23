@@ -1,4 +1,5 @@
-﻿var Callbacks = [];
+﻿"use strict";
+var Callbacks = [];
 
 function raise(eventName, eventObject) {
     Callbacks.forEach(function(callback) {

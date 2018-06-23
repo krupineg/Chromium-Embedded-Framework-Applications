@@ -1,6 +1,6 @@
 ﻿module.exports = {
     mode: 'development',
-    entry: './app.js',
+    entry: './src/app.js',
     devtool: 'source-map',
     output: {
         filename: 'dom-recorder.js'

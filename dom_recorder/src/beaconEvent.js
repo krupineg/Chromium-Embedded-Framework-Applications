@@ -1,4 +1,5 @@
-﻿function notifyAboutBeacon(beacon, type, id) {
+﻿"use strict";
+function notifyAboutBeacon(beacon, type, id) {
     var rect = new DOMRect();
     if (beacon.getBoundingClientRect) {
         rect = beacon.getBoundingClientRect();

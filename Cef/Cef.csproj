@@ -197,9 +197,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="..\dom_recorder\entry.config.json">
-      <Link>Script\entry.config.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\dom_recorder\dist\dom-recorder.js.map">
+      <Link>Script\dom-recorder.js.map</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\packages\RavenDB.Database.3.5.7-patch-35263\tools\Raven.Studio.Html5.zip">
       <Link>Raven.Studio.Html5.zip</Link>
@@ -209,6 +209,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Script\entry.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -223,7 +226,7 @@
   <ItemGroup>
     <Content Include="..\dom_recorder\dist\dom-recorder.js">
       <Link>Script\dom-recorder.js</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

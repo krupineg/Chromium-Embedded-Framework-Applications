@@ -1,6 +1,6 @@
-//'use strict';
+"use strict";
 let factory = require("./factory.js");
-let config = require("./entry.config.json");
+let config = require("./config/entry.config.json");
 let domObserver = require("./observable.js");
 
 let api = factory.create(config);

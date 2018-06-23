@@ -1,4 +1,4 @@
-//'use strict';
+"use strict";
 
 function observeMutation(domObserver, config) {
     const attributesMutationType = 'attributes';
