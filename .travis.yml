@@ -1,0 +1,32 @@
+env: 
+branches:
+  except: 
+os: linux
+dist: trusty
+sudo: false
+language:
+- node_js
+node_js:
+- node
+before_cache: 
+cache:
+  directories:
+  - "$HOME/.local"
+  - "$HOME/.npm"
+  - "$HOME/.pip-cache/"
+before_install: 
+install: npm install
+before_script: 
+script: npm build run
+after_success: 
+after_failure: 
+after_script: 
+before_deploy: 
+after_deploy: 
+deploy:
+  provider: releases
+  api_key:
+    secure: jjhp+Zg6GwF8iL6W7Yg4LDhGOqr8bWEVFDyRMuOKwobSiNpqQxHITWIRlUMrsdnY4sEUf4hxfcLQv2sp03KQfXNA8c2VyVABNPhr+t77H+qP43QGp61irO8Mf4y/Ujbb3M3KB18DhunlWp6/9sX0SFOpGCWoyDaVFrHZG3pTKdW5sg3YWoMKKxLxUsu2cBPw61snfSRjEHG5Bd5ahUBXX3aZP/uSkOrk9nrPZ7YXDk2q1gxgD6y0hGj4UoNNL54cKUygFi4E6oEcA+ls8eNSOm/ssEi3Fb1zMD+z7BKvvNirR68MiOHOdjtTkhXxv/2LcUnJI+qsDrxCQiNEdZpIhqz6KouKbDmorVyGhb3xrkgnj6qX2KBVyT5QCCotvmA0zeHhgob3zN6QlE1opr5ROa22TuwGIJaUwvmueghO9gKtJ/zyUcSnkEo8Gp0j5dADndVCSDP2G8YX8NfhR1HGk18uKlgSxSqrdiBNSpXhjA7amxaqyo2RrJe2uH3eKLnlVsz3PWJeixPEAEONRzeTEh7PZ+Q53+plXExWcqqlwzwENJgLb97Wck+kS7sgpFE1fuNn/HlNxCDmdV5r4knWv4fOzS5eFyJCssFOlKM+YSDduPz9Lj78jd6jSjafsZlRVSpHdpPSatZFqpKURpbVhZ7sX4H6blI3VVG4QM9npPk=
+  file: dist/dom-recorder.js
+  on:
+    repo: krupineg/dom-recorder-releases
