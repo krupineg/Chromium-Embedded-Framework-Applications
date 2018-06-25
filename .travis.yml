@@ -1,4 +1,4 @@
-env: 
+env: TRAVIS_BUILD_DIR=dom_recorder
 branches:
   except: 
 os: linux
@@ -17,7 +17,7 @@ cache:
 before_install: 
 install: npm install
 before_script: 
-script: npm build run
+script: npm run build
 after_success: 
 after_failure: 
 after_script: 
