@@ -11,7 +11,7 @@ namespace CommonsLib
             string script = string.Format("(async function() {{ await CefSharp.BindObjectAsync(\"{0}\"); }})();",
                 JavascriptNames.___Web_Observer);
              var result = await runScript.Evaluate(script);
-
+            
             script = string.Format(
                 "function detectFocus() {{ {0}.elementFocusChanged(); }}; window.addEventListener('focus', detectFocus, true)",
                 JavascriptNames.___Web_Observer);
@@ -19,6 +19,10 @@ namespace CommonsLib
 
             script = File.ReadAllText("Script/dom-recorder.js");
 
+            result = await runScript.Evaluate(script);
+
+            script = string.Format("domRecorder.api.subscribe(domRecorder.callbackDiscovery.findCallback(JSON.stringify));",
+                JavascriptNames.___Web_Observer);
             result = await runScript.Evaluate(script);
 
             script = string.Format(

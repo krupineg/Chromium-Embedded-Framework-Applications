@@ -58,8 +58,9 @@ namespace CommonsLib
             "document.activeElement.parentElement.value",
         };
 
-        public void mouseOverChanged(object className, object id, string name, object x, object y)
+        public async void mouseOverChanged(object className, object id, string name, double x, double y)
         {
+            var res = await _scriptRunner.RunWithResult($"domRecorder.api.highlight({x}, {y})");
             //Debug.WriteLine("===============");
             //Debug.WriteLine("mouse over changed");
 
