@@ -1,24 +1,33 @@
 ﻿"use strict";
-const defaultColor = '#f00';
+let tracker = require('./tracker.js');
+var CurrentElement = null;
 
 function highlight(beacon, color, thickness) {
-    var highlightColor = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test('color') ? color : defaultColor;
-    beacon.style.outline = `${highlightColor} solid ${thickness}px`;
-    
+    beacon.style.outline = `${color} solid ${thickness}px`;
 }
 
-function highlightAt(x, y, color, ignoreAttribute) {
+function highlightAt(x, y, color) {
     let element = document.elementFromPoint(x, y);
-    element.setAttribute(ignoreAttribute, true);
-    highlight(element, color, 2);
-    element.removeAttribute(ignoreAttribute);
+    if (CurrentElement === element) {
+        return;
+    } else {
+        extinguishAt();
+        CurrentElement = element;
+
+        console.log(CurrentElement);
+        tracker.dontTrackChange(CurrentElement, function () {
+            highlight(element, color, 2);
+        });
+    }
+  
 }
 
-function extinguishAt(x, y, ignoreAttribute) {
-    let element = document.elementFromPoint(x, y);
-    element.setAttribute(ignoreAttribute, true);
-    element.style.outline = `transparent solid 0px`;
-    element.ignoremutation = false;
+function extinguishAt() {
+    if (CurrentElement) {
+        tracker.dontTrackChange(CurrentElement, function () {
+            CurrentElement.style.outline = `transparent solid 0px`;
+        });
+    }
 }
 
 module.exports = { highlight, highlightAt, extinguishAt };

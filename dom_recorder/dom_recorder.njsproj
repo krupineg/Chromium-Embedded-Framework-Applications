@@ -13,8 +13,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>781e59a9-42c5-4c50-8467-b8efcd6b631f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>src\app.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -38,6 +37,9 @@
     <Compile Include="src\api.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\callbackDiscovery.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\callbackObject.js">
       <SubType>Code</SubType>
     </Compile>
@@ -52,8 +54,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\mutation.js" />
+    <Compile Include="src\tracker.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\walk.js">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test\fixture.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
     </Compile>
     <Compile Include="webpack.config.js">
       <SubType>Code</SubType>
@@ -61,8 +70,12 @@
     <Content Include="src\config\entry.config.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="test\index.html">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="test\" />
     <Folder Include="src\" />
     <Folder Include="src\config\" />
   </ItemGroup>

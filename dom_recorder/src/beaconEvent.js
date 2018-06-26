@@ -1,5 +1,5 @@
 ﻿"use strict";
-function notifyAboutBeacon(beacon, type, id) {
+function notifyAboutBeacon(beacon, type, id, changedAttribute) {
     var rect = new DOMRect();
     if (beacon.getBoundingClientRect) {
         rect = beacon.getBoundingClientRect();
@@ -8,6 +8,7 @@ function notifyAboutBeacon(beacon, type, id) {
         type: type,
         time: new Date().valueOf(),
         url: document.URL,
+        changedAtribute: changedAttribute,
         beacon: {
             id: id,
             x: rect.left,
@@ -38,17 +39,17 @@ function notifyAboutBeacon(beacon, type, id) {
 }
 
 function detected(beacon, id) {
-    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-detected', id);
+    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-detected', id, null);
     return beaconEvent;
 }
 
-function changed(beacon, id) {
-    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-changed', id);
+function changed(beacon, id, changedAttribute) {
+    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-changed', id, changedAttribute);
     return beaconEvent;
 }
 
 function lost(beacon, id) {
-    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-removed', id);
+    let beaconEvent = notifyAboutBeacon(beacon, 'beacon-removed', id, null);
     return beaconEvent;
 }
 

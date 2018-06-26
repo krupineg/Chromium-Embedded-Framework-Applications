@@ -4,6 +4,8 @@
   "identifierName": "beaconId",
   "ignoreAttribute": "ignoreMutation",
   "observableItems": [
+    "body",
+    "div",
     "label",
     "input",
     "textarea",
@@ -33,5 +35,33 @@
     "dialog",
     "menu",
     "menuitem"
-  ] 
+  ],
+  "observableAttributes": [
+    "id",
+    "src",
+    "style",
+    "class",
+    "className",
+    "x",
+    "y",
+    "scrollTop",
+    "scrollLeft",
+    "scrollRight",
+    "scrollBottom",
+    "href",
+    "innerHTML",
+    "submit",
+    "title",
+    "value",
+    "role",
+    "innerText",
+    "jsAction",
+    "focus",
+    "dataset",
+    "background",
+    "clientHeight",
+    "clientWidth",
+    "clientTop",
+    "clientLeft"
+  ]
 }

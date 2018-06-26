@@ -1,24 +1,27 @@
 ﻿"use strict";
-var CallbackFunction = {};
 var HighlightLibrary = {};
-var IgnoreAttribute = {};
+var Observable = {};
+var MutationAware = {};
+let defaultColor = '#f00';
 
-function init(callback, highlight, ignoreAttribute) {
-    CallbackFunction = callback;
-    HighlightLibrary = highlight;
-    IgnoreAttribute = ignoreAttribute;
+function init(mutationAware, observable, highlightLibrary) {
+    Observable = observable;
+    HighlightLibrary = highlightLibrary;
+    MutationAware = mutationAware;
     return this;
 }
 
-function callback(name, obj) {
-    CallbackFunction(name, obj);
+function subscribe(callback, additionalAttributes) {
+    Observable.subscribe(callback);
+    MutationAware.observeMutation(Observable, additionalAttributes);
 }
 
-function extinguish(x, y) {
-    HighlightLibrary.extinguishAt(x, y, IgnoreAttribute);
+function extinguish() {
+    HighlightLibrary.extinguish();
 }
 
-function highlight(x, y, color) {
-    HighlightLibrary.highlightAt(x, y, color, IgnoreAttribute);
+function highlight(x, y) {
+    HighlightLibrary.highlightAt(x, y, defaultColor);
 }
-module.exports = { init, callback, highlight, extinguish };
+
+module.exports = { init, subscribe, highlight, extinguish };

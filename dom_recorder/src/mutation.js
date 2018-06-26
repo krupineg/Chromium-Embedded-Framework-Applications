@@ -1,24 +1,17 @@
 "use strict";
 
-function observeMutation(domObserver, config) {
+function observeMutation(domObserver, additionalAttributesToObserve) {
+    additionalAttributesToObserve = additionalAttributesToObserve || [];
     const attributesMutationType = 'attributes';
     let beaconEvent = require("./beaconEvent.js");
+    let tracker = require("./tracker.js");
     let walk = require("./walk.js");
-    let guid = require("./guid.js");
-    
-    function isObserved(element) {
-        function isIgnored(element) {
-            element.getAttribute(config.ignoreAttribute);
-        }
-        let type = element.tagName || element.nodeName;
-        return config.observableItems.includes(type.toLowerCase()) && !isIgnored(element);
-    }
    
     const mutationObserver = new MutationObserver(
         function (mutations) {
             mutations.forEach(function (mutation) {
-                if (mutation.type === attributesMutationType && isObserved(mutation.target)) {
-                    beaconChanged(mutation.target);
+                if (mutation.type === attributesMutationType) {
+                    beaconChanged(mutation.target, mutation.attributeName);
                 }
                 mutation.addedNodes.forEach(function (addedNode) {
                     walk.dom(addedNode, beaconAppears);
@@ -28,32 +21,32 @@ function observeMutation(domObserver, config) {
                 });
             });
         });
-  
+    
     function beaconDisappears(beacon) {
-        if (isObserved(beacon)) {
-            let attached = guid.attach(beacon, config.identifierName);
-            let event = beaconEvent.lost(attached, guid.identity(attached, config.identifierName));
+        if (tracker.isObserved(beacon)) {
+            let attached = tracker.attach(beacon);
+            let event = beaconEvent.lost(attached, tracker.identity(attached));
             domObserver.raise(event.type, event);
         }
     }
 
-    function beaconChanged(beacon) {
-        if (isObserved(beacon)) {
-            let attached = guid.attach(beacon, config.identifierName);
-            let event = beaconEvent.changed(attached, guid.identity(attached, config.identifierName));
+    function beaconChanged(beacon, changed) {
+        if (tracker.isObserved(beacon) && tracker) {
+            let attached = tracker.attach(beacon);
+            let event = beaconEvent.changed(attached, tracker.identity(attached), changed);
             domObserver.raise(event.type, event);
         }
     }
 
     function beaconAppears(beacon) {
-        if (isObserved(beacon)) {
-            let attached = guid.attach(beacon, config.identifierName);
-            let event = beaconEvent.detected(attached, guid.identity(attached, config.identifierName));
+        if (tracker.isObserved(beacon)) {
+            let attached = tracker.attach(beacon);
+            let event = beaconEvent.detected(attached, tracker.identity(attached));
             domObserver.raise(event.type, event);
         }
     }
 
-    mutationObserver.observe(document, { childList: true, subtree: true, attributes: true });
+    mutationObserver.observe(document, { childList: true, subtree: true, attributes: true, attributeFilter: additionalAttributesToObserve.concat(tracker.attributeFilter()) });
     walk.dom(document.body, beaconAppears);
 }
 
