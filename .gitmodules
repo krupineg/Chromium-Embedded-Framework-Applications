@@ -1,0 +1,3 @@
+[submodule "dom_recorder"]
+	path = dom_recorder
+	url = https://github.com/krupineg/dom_recorder.git
